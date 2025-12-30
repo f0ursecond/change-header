@@ -1,7 +1,7 @@
 import os
+import string
 
 def lihat_header(file_path, jumlah_byte=16):
-    """Melihat header file dalam format hex dan ASCII"""
     try:
         with open(file_path, 'rb') as f:
             header = f.read(jumlah_byte)
@@ -9,47 +9,45 @@ def lihat_header(file_path, jumlah_byte=16):
         print(f"\n{'='*50}")
         print(f"Header File: {file_path}")
         print(f"{'='*50}")
-        print(f"HEX: {header.hex(' ').upper()}")
-        print(f"ASCII: {header}")
+        print(f"ORIGINAL HEX: {header.hex(' ').upper()}")
+
+        stringHex = header.hex(' ').upper()
+
+        print(f"SUBSTRING HEX: {stringHex[:8]}")
+        print(f"HEX TO DECIMAL: {int(stringHex[:8].replace(' ', ''), 16)}")
+        #print(f"ASCII: {header}")
         print(f"{'='*50}\n")
         
         return header
     except FileNotFoundError:
-        print(f"❌ File '{file_path}' tidak ditemukan!")
+        print(f"File '{file_path}' tidak ditemukan!")
         return None
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
         return None
 
 
 def ubah_header(file_path, header_baru, backup=True):
     """
-    Mengubah header file secara langsung (in-place)
-    
-    Parameters:
-    - file_path: path ke file yang akan diubah
-    - header_baru: bytes baru untuk header (gunakan bytes.fromhex() atau b'...')
-    - backup: buat backup file sebelum diubah (default: True)
     """
     
     if not os.path.exists(file_path):
-        print(f"❌ File '{file_path}' tidak ditemukan!")
+        print(f"File '{file_path}' tidak ditemukan!")
         return False
     
     try:
-        
         if backup:
             backup_path = file_path + '.backup'
             with open(file_path, 'rb') as f_original:
                 with open(backup_path, 'wb') as f_backup:
                     f_backup.write(f_original.read())
-            print(f"✅ Backup dibuat: {backup_path}")
+            print(f"Backup dibuat: {backup_path}")
         
         
         with open(file_path, 'rb') as f:
             data = f.read()
         
-        print(f"\n📊 Info File:")
+        print(f"\nInfo File:")
         print(f"   Ukuran total: {len(data)} bytes")
         print(f"   Header lama: {data[:len(header_baru)].hex(' ').upper()}")
         print(f"   Header baru: {header_baru.hex(' ').upper()}")
@@ -59,14 +57,14 @@ def ubah_header(file_path, header_baru, backup=True):
             f.seek(0) 
             f.write(header_baru)  
         
-        print(f"\n✅ Header berhasil diubah pada file: {file_path}")
+        print(f"\nHeader berhasil diubah pada file: {file_path}")
         return True
         
     except PermissionError:
-        print(f"❌ Tidak punya izin untuk mengubah file!")
+        print(f"Tidak punya izin untuk mengubah file!")
         return False
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
         return False
 
 
@@ -75,44 +73,58 @@ def kembalikan_header(file_path, header_asli):
     return ubah_header(file_path, header_asli, backup=False)
 
 
-# ============= CONTOH PENGGUNAAN =============
-
 if __name__ == "__main__":
-    print("="*60)
-    print("FILE HEADER MODIFIER - Challenge Sistem Operasi")
-    print("="*60)
-    
-    # Contoh 1: Lihat header file
-    print("\n[1] Melihat Header File")
-    file_target = "test.jpg"  # Ganti dengan file yang ingin diubah
-    
-    # Uncomment untuk melihat header
-    # lihat_header(file_target)
-    
-    
-    # Contoh 2: Ubah header file JPEG menjadi PNG (rusak)
-    print("\n[2] Mengubah Header File")
-    
-    # Header asli JPEG: FF D8 FF E0
-    # Header PNG: 89 50 4E 47 0D 0A 1A 0A
-    
+
+    header_rusak_jpeg = bytes.fromhex("00 D8 FF E0")
+    header_rusak_png = bytes.fromhex("00 50 4E 47 0D 0A 1A 0A")
+    header_rusak_pdf = bytes.fromhex("00 50 44 46 2D")
+
     header_jpeg = bytes.fromhex("FF D8 FF E0")
     header_png = bytes.fromhex("89 50 4E 47 0D 0A 1A 0A")
-    header_rusak = bytes.fromhex("00 00 00 00")
-    
-    # Uncomment untuk mengubah header
-    # ubah_header(file_target, header_rusak)
-    
-    
-    # Contoh 3: Kembalikan header asli
-    print("\n[3] Mengembalikan Header Asli")
-    kembalikan_header(file_target, header_jpeg)
-    
-    
-    print("\n" + "="*60)
-    print("📝 CATATAN:")
-    print("   - Uncomment baris yang ingin dijalankan")
-    print("   - Backup otomatis dibuat (.backup)")
-    print("   - Hati-hati saat mengubah header!")
+    header_pdf = bytes.fromhex("25 50 44 46 2D")
+    header_sql = bytes.fromhex("2D 2D 0A 2D 2D 20 44 61 74 61 62 61 73 65 3A 20")
+
     print("="*60)
+    print("Sistem Operasi")
+    print("="*60)
+    
+    print("\n[1] Header File : ")
+
+    file_target = "banner.png"  
+    file_target2 = "banner2.png"  
+    file_target3 = "banner3.png"  
+
+    file_target4 = "test.jpg"  
+    file_target5 = "test2.jpg" 
+    file_target6 = "test3.jpg" 
+    file_target9 = "test4.jpg" 
+
+    file_target7 = "contoh.pdf" 
+    file_target8 = "skripsi.pdf" 
+
+    file_target10 = "sql1.sql"
+    file_target11 = "sql2.sql"
+
+    file_target12 = "tugas1.docx"
+    file_target13 = "tugas2.docx"
+
+    # lihat_header(file_target)
+    # lihat_header(file_target2)
+    # lihat_header(file_target3)
+    # lihat_header(file_target4)
+    # lihat_header(file_target5)
+    # lihat_header(file_target6)
+    lihat_header(file_target10)
+    lihat_header(file_target11)
+    # lihat_header(file_target7)
+    # lihat_header(file_target8)
+    
+    print("\n[2] Ubah Header File")
+    #ubah_header(file_target8, header_rusak_pdf)
+    
+    
+    print("\n[3] Mengembalikan Header Asli")
+    #kembalikan_header(file_target8, header_pdf)
+    
+
 
