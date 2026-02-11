@@ -15,7 +15,6 @@ def lihat_header(file_path, jumlah_byte=16):
 
         print(f"SUBSTRING HEX: {stringHex[:8]}")
         print(f"HEX TO DECIMAL: {int(stringHex[:8].replace(' ', ''), 16)}")
-        #print(f"ASCII: {header}")
         print(f"{'='*50}\n")
         
         return header
@@ -78,11 +77,12 @@ if __name__ == "__main__":
     header_rusak_jpeg = bytes.fromhex("00 D8 FF E0")
     header_rusak_png = bytes.fromhex("00 50 4E 47 0D 0A 1A 0A")
     header_rusak_pdf = bytes.fromhex("00 50 44 46 2D")
+    header_rusak_exe = bytes.fromhex("00 5A 90 00 03 00 00 00 04 00 00 00 FF FF 00 00")
 
     header_jpeg = bytes.fromhex("FF D8 FF E0")
     header_png = bytes.fromhex("89 50 4E 47 0D 0A 1A 0A")
     header_pdf = bytes.fromhex("25 50 44 46 2D")
-    header_sql = bytes.fromhex("2D 2D 0A 2D 2D 20 44 61 74 61 62 61 73 65 3A 20")
+    header_exe = bytes.fromhex("4D 5A 90 00 03 00 00 00 04 00 00 00 FF FF 00 00")
 
     print("="*60)
     print("Sistem Operasi")
@@ -90,34 +90,31 @@ if __name__ == "__main__":
     
     print("\n[1] Header File : ")
 
-    file_target = "banner.png"  
-    file_target2 = "banner2.png"  
-    file_target3 = "banner3.png"  
+    fileJpeg1 = "test2.jpg"  
+    fileJpeg2 = "test3.jpg"  
 
-    file_target4 = "test.jpg"  
-    file_target5 = "test2.jpg" 
-    file_target6 = "test3.jpg" 
-    file_target9 = "test4.jpg" 
+    filePng1 = "banner4.png"  
+    filePng2 = "banner2.png"  
 
-    file_target7 = "contoh.pdf" 
-    file_target8 = "skripsi.pdf" 
+    filePdf1 = "skripsi.pdf"  
+    filePdf2 = "test_pdf.pdf"  
 
-    file_target10 = "sql1.sql"
-    file_target11 = "sql2.sql"
+    fileExe1 = "file1.exe"  
+    fileExe2 = "vscode.exe"
 
-    file_target12 = "tugas1.docx"
-    file_target13 = "tugas2.docx"
+    # lihat_header(fileJpeg1)  
+    # lihat_header(fileJpeg2)  
 
-    # lihat_header(file_target)
-    # lihat_header(file_target2)
-    # lihat_header(file_target3)
-    # lihat_header(file_target4)
-    # lihat_header(file_target5)
-    # lihat_header(file_target6)
-    lihat_header(file_target10)
-    lihat_header(file_target11)
-    # lihat_header(file_target7)
-    # lihat_header(file_target8)
+    # lihat_header(filePng1)  
+    # lihat_header(filePng2)  
+
+    lihat_header(filePng1)  
+    ubah_header(filePng1,header_rusak_png)
+    #kembalikan_header(filePdf1,header_pdf)
+    #lihat_header(filePdf2)  
+
+    # lihat_header(fileExe1)  
+    # lihat_header(fileExe2)  
     
     print("\n[2] Ubah Header File")
     #ubah_header(file_target8, header_rusak_pdf)
